@@ -41,13 +41,17 @@ const OnboardingForm = ({ values, errors, touched, handleChange, status }) => {
             value={values.email}
             onChange={handleChange}
           />
+          {/* Validate that email has been entered and in fact IS an email*/}
+          {touched.email && errors.email && (
+            <p className="errors">{errors.email}</p>
+          )}
         </label>
 
         <label>
           Password:
           <input
             id="password"
-            type="text"
+            type="password"
             name="password"
             value={values.password}
             onChange={handleChange}
@@ -62,6 +66,15 @@ const OnboardingForm = ({ values, errors, touched, handleChange, status }) => {
 
         <button type="submit">Add User</button>
       </Form>
+
+      {user.map(user => (
+        <ul key={user.id}>
+          <li>Name: {user.name}</li>
+          <li>Email: {user.email}</li>
+          <li>Password: {user.password}</li>
+          <li>TOS Accepted: {user.tos.value}</li>
+        </ul>
+      ))}
     </div>
   );
 };
@@ -81,7 +94,9 @@ const FormikOnboardingForm = withFormik({
   //validation handler
   validationSchema: Yup.object().shape({
     name: Yup.string().required(),
-    email: Yup.string().required(),
+    email: Yup.string()
+      .required()
+      .email(),
     password: Yup.string().required(),
   }),
 
