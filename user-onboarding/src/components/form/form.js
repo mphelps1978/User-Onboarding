@@ -72,7 +72,7 @@ const OnboardingForm = ({ values, errors, touched, handleChange, status }) => {
           <li>Name: {user.name}</li>
           <li>Email: {user.email}</li>
           <li>Password: {user.password}</li>
-          <li>TOS Accepted: {user.tos.value}</li>
+          <li>TOS Accepted: {String(user.tos)}</li>
         </ul>
       ))}
     </div>
