@@ -81,6 +81,7 @@ const OnboardingForm = ({ values, errors, touched, handleChange, status }) => {
 
 //Creating a HOC to wrap the component inside withFormik
 
+// everything we get back from the initial component, we're passing back to the HOC via props, and converting those props to values.
 const FormikOnboardingForm = withFormik({
   mapPropsToValues({ name, email, password, tos, nodes }) {
     return {
@@ -93,18 +94,21 @@ const FormikOnboardingForm = withFormik({
 
   //validation handler
   validationSchema: Yup.object().shape({
-    name: Yup.string().required(),
+    name: Yup.string().required(), // You better have typed something in.
+
     email: Yup.string()
-      .required()
-      .email(),
-    password: Yup.string().required(),
+      .required() // Obvious validation
+      .email(), // Make sure it's actually an email
+
+    password: Yup.string().required(), // do I need to repeat this?
   }),
 
-  //Submit button pressed, let's do some stuff:
+  // Submit button pressed, let's do some stuff:
   // 1. Log out what we've passed to Axios
   // 2. Make the Axios call to the API, posting the values from the form
   // 3. Setting the Status state to the response status from the API
   // 4. Clearing the Form
+
   handleSubmit(values, { setStatus, resetForm }) {
     console.log("Submitting", values);
     Axios.post("https://reqres.in/api/users", values)
