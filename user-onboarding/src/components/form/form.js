@@ -2,8 +2,18 @@ import React, { useState, useEffect } from "react";
 import { withFormik, Form, Field } from "formik";
 import * as Yup from "yup";
 import Axios from "axios";
+import { Grid, Card, Button } from "semantic-ui-react";
+import "../../App.css";
 
-const OnboardingForm = ({ values, errors, touched, handleChange, status }) => {
+const OnboardingForm = ({
+  values,
+  errors,
+  touched,
+  handleChange,
+  status,
+  isSubmitting,
+  setSubmitting,
+}) => {
   //Setting State
   const [user, setUser] = useState([]);
 
@@ -64,16 +74,31 @@ const OnboardingForm = ({ values, errors, touched, handleChange, status }) => {
           <span className="checkmark" />
         </label>
 
-        <button type="submit">Add User</button>
+        <Button
+          className="ui primary button"
+          color="blue"
+          type="submit"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Please Wait" : "Add User"}
+        </Button>
       </Form>
 
       {user.map(user => (
-        <ul key={user.id}>
-          <li>Name: {user.name}</li>
-          <li>Email: {user.email}</li>
-          <li>Password: {user.password}</li>
-          <li>TOS Accepted: {String(user.tos)}</li>
-        </ul>
+        <div key={user.id}>
+          <Grid columns={3} divided>
+            <Grid.Row className="row">
+              <Grid.Column className="column">
+                <Card>
+                  <Card.Content header={`Name: ${user.name}`} />
+                  <Card.Content description={`Password: ${user.password}`} />
+                  <Card.Content description={`Agree to TOS: ${user.tos}`} />
+                  <Card.Content extra>Email: {user.email}</Card.Content>
+                </Card>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </div>
       ))}
     </div>
   );
@@ -83,7 +108,7 @@ const OnboardingForm = ({ values, errors, touched, handleChange, status }) => {
 
 // everything we get back from the initial component, we're passing back to the HOC via props, and converting those props to values.
 const FormikOnboardingForm = withFormik({
-  mapPropsToValues({ name, email, password, tos, nodes }) {
+  mapPropsToValues({ name, email, password, tos, nodes, setSubmitting }) {
     return {
       name: name || "",
       email: email || "",
@@ -109,7 +134,7 @@ const FormikOnboardingForm = withFormik({
   // 3. Setting the Status state to the response status from the API
   // 4. Clearing the Form
 
-  handleSubmit(values, { setStatus, resetForm }) {
+  handleSubmit(values, { setStatus, resetForm, setSubmitting }) {
     console.log("Submitting", values);
     Axios.post("https://reqres.in/api/users", values)
       .then(response => {
@@ -119,6 +144,9 @@ const FormikOnboardingForm = withFormik({
       })
       .catch(error => {
         console.log("There was a problem: ", error.response);
+      })
+      .finally(() => {
+        setSubmitting(false);
       });
   },
 })(OnboardingForm);

@@ -36,3 +36,21 @@
     transform: rotate(360deg);
   }
 }
+
+.container {
+  width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+p.errors {
+  position: relative;
+  margin: 0 auto;
+  clear: left;
+  height: auto;
+  z-index: 0;
+  text-align: center; /* Add This*/
+  color: red;
+  font-weight: bolder;
+  text-transform: uppercase;
+}
