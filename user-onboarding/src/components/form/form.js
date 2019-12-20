@@ -84,22 +84,20 @@ const OnboardingForm = ({
         </Button>
       </Form>
 
-      {user.map(user => (
-        <div key={user.id}>
-          <Grid columns={3} divided>
-            <Grid.Row className="row">
-              <Grid.Column className="column">
-                <Card>
-                  <Card.Content header={`Name: ${user.name}`} />
-                  <Card.Content description={`Password: ${user.password}`} />
-                  <Card.Content description={`Agree to TOS: ${user.tos}`} />
-                  <Card.Content extra>Email: {user.email}</Card.Content>
-                </Card>
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
-        </div>
-      ))}
+      <Grid columns={3} rows={3} divided>
+        <Grid.Row className="row">
+          <Grid.Column className="column" color="Teal">
+            {user.map(user => (
+              <Card>
+                <Card.Content header={`Name: ${user.name}`} />
+                <Card.Content description={`Password: ${user.password}`} />
+                <Card.Content description={`Agree to TOS: ${user.tos}`} />
+                <Card.Content extra>Email: {user.email}</Card.Content>
+              </Card>
+            ))}
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
     </div>
   );
 };
